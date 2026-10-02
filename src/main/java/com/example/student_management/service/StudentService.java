@@ -1,5 +1,8 @@
 package com.example.student_management.service;
 
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 import com.example.student_management.entity.Student;
 import com.example.student_management.exception.StudentNotFoundException;
 import com.example.student_management.repository.StudentRepository;
@@ -47,6 +50,24 @@ public class StudentService {
         return studentRepository.findByDepartmentIgnoreCase(department);
     }
 
+    public Map<String, Object> getStatistics() {
+        Map<String, Object> stats = new LinkedHashMap<>();
+        stats.put("totalStudents", studentRepository.count());
+
+        Map<String, Long> departmentWise = new LinkedHashMap<>();
+        for (Object[] row : studentRepository.countByDepartment()) {
+            departmentWise.put((String) row[0], (Long) row[1]);
+        }
+        stats.put("departmentWise", departmentWise);
+
+        Map<String, Long> yearWise = new LinkedHashMap<>();
+        for (Object[] row : studentRepository.countByYear()) {
+            yearWise.put(String.valueOf(row[0]), (Long) row[1]);
+        }
+        stats.put("yearWise", yearWise);
+
+        return stats;
+    }
     public Student updateStudent(Long id, Student updatedStudent) {
 
         Student existingStudent = getStudentById(id);

@@ -15,6 +15,12 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     List<Student> findByRegisterNoContainingIgnoreCase(String registerNo);
 
+    @Query("SELECT UPPER(s.department), COUNT(s) FROM Student s GROUP BY UPPER(s.department)")
+    List<Object[]> countByDepartment();
+
+    @Query("SELECT s.year, COUNT(s) FROM Student s GROUP BY s.year ORDER BY s.year")
+    List<Object[]> countByYear();
+
     @Query("SELECT s FROM Student s WHERE " +
             "(:department IS NULL OR LOWER(s.department) = LOWER(:department)) AND " +
             "(:year IS NULL OR s.year = :year) AND " +

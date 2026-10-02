@@ -1,5 +1,6 @@
 package com.example.student_management.controller;
 
+import java.util.Map;
 import com.example.student_management.entity.Student;
 import com.example.student_management.service.StudentService;
 import jakarta.validation.Valid;
@@ -29,6 +30,12 @@ public class StudentController {
         return ResponseEntity.ok(
                 studentService.filterStudents(department, year, semester)
         );
+    }
+
+    // STATISTICS
+    @GetMapping("/statistics")
+    public ResponseEntity<Map<String, Object>> getStatistics() {
+        return ResponseEntity.ok(studentService.getStatistics());
     }
 
     // GET student by ID
